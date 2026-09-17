@@ -59,7 +59,7 @@ const birthdayConfig = {
   final: {
     title: "Forever & Always ❤️",
     quote: "My favorite place is wherever I am with you.",
-    birthdayMessage: "Happy Birthday, My Beautiful Wife ❤️"
+    birthdayMessage: "Happy Birthday, My Beautiful Chandni ❤️"
   },
 
   music: {
