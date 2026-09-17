@@ -25,16 +25,16 @@ const LoveLetter = ({ config, onNext }) => {
           initial={{ y: 100, opacity: 0, rotateX: 20 }}
           animate={{ y: 0, opacity: 1, rotateX: 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="paper-texture bg-romantic-cream p-8 md:p-12 rounded-lg shadow-2xl relative overflow-hidden"
+          className="paper-texture bg-romantic-cream p-6 md:p-12 rounded-lg shadow-2xl relative overflow-hidden flex flex-col min-h-0 max-h-full"
           style={{ transformStyle: 'preserve-3d' }}
         >
           {/* Decorative corners */}
-          <div className="absolute top-4 left-4 text-romantic-pink/30"><Heart size={20} /></div>
-          <div className="absolute top-4 right-4 text-romantic-pink/30"><Heart size={20} /></div>
-          <div className="absolute bottom-4 left-4 text-romantic-pink/30"><Heart size={20} /></div>
-          <div className="absolute bottom-4 right-4 text-romantic-pink/30"><Heart size={20} /></div>
+          <div className="absolute top-4 left-4 text-romantic-pink/30 pointer-events-none"><Heart size={20} /></div>
+          <div className="absolute top-4 right-4 text-romantic-pink/30 pointer-events-none"><Heart size={20} /></div>
+          <div className="absolute bottom-4 left-4 text-romantic-pink/30 pointer-events-none"><Heart size={20} /></div>
+          <div className="absolute bottom-4 right-4 text-romantic-pink/30 pointer-events-none"><Heart size={20} /></div>
 
-          <div className="font-handwriting text-2xl md:text-3xl text-romantic-dark leading-relaxed space-y-6">
+          <div className="font-handwriting text-xl md:text-3xl text-romantic-dark leading-relaxed space-y-4 md:space-y-6 overflow-y-auto no-scrollbar flex-1 pb-4">
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
