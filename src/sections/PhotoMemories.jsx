@@ -52,39 +52,58 @@ const PhotoMemories = ({ config, onNext }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
             transition={{ duration: 1.5, ease: "easeInOut" }}
-            className="absolute inset-0 w-full h-full"
+            className="absolute inset-0 w-full h-full flex flex-col"
           >
-            {/* Fallback color/gradient if image fails or before loading */}
-            <div className="absolute inset-0 bg-gradient-to-b from-romantic-dark/80 to-romantic-dark z-0" />
+            {/* Blurred Background to fill space beautifully */}
+            <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+              <img
+                src={currentPhoto.src}
+                alt=""
+                className="w-full h-full object-cover blur-2xl opacity-40 scale-110"
+                style={{
+                  animation: 'ken-burns 20s ease-out forwards',
+                }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+              <div className="absolute inset-0 bg-black/20 z-0" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
+            </div>
             
-            <img
-              src={currentPhoto.src}
-              alt={currentPhoto.title || "Memory"}
-              className="absolute inset-0 w-full h-full object-cover opacity-60 z-10"
-              style={{
-                animation: 'ken-burns 20s ease-out forwards',
-              }}
-              onError={(e) => {
-                e.target.style.display = 'none'; // hide broken image, fallback gradient shows
-              }}
-            />
-            
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-20" />
-            
-            <div className="absolute inset-0 z-30 flex flex-col items-center justify-end pb-24 px-6 md:pb-32 text-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1, duration: 1 }}
-                className="glass-panel p-6 md:p-8 rounded-3xl max-w-2xl w-full mx-auto"
-              >
-                <h3 className="text-2xl md:text-3xl font-serif text-white mb-3">
-                  {currentPhoto.title}
-                </h3>
-                <p className="text-lg md:text-xl text-romantic-rose font-light italic">
-                  "{currentPhoto.caption}"
-                </p>
-              </motion.div>
+            {/* Main Content Layout */}
+            <div className="relative z-10 flex flex-col h-full w-full">
+              {/* Image Container - Flex-1 makes it take all remaining space above text */}
+              <div className="flex-1 w-full px-4 pt-20 pb-6 flex items-center justify-center min-h-0 pointer-events-none">
+                <img
+                  src={currentPhoto.src}
+                  alt={currentPhoto.title || "Memory"}
+                  className="w-full h-full object-contain drop-shadow-2xl"
+                  style={{
+                    animation: 'ken-burns 20s ease-out forwards',
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              </div>
+              
+              {/* Text Card Container - Sits at the bottom above controls */}
+              <div className="w-full px-6 pb-32 md:pb-36 flex-shrink-0 text-center pointer-events-none z-20">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 1 }}
+                  className="glass-panel p-6 md:p-8 rounded-3xl max-w-2xl w-full mx-auto shadow-xl"
+                >
+                  <h3 className="text-2xl md:text-3xl font-serif text-white mb-3 drop-shadow-md">
+                    {currentPhoto.title}
+                  </h3>
+                  <p className="text-lg md:text-xl text-romantic-rose font-light italic drop-shadow-sm">
+                    "{currentPhoto.caption}"
+                  </p>
+                </motion.div>
+              </div>
             </div>
           </motion.div>
         </AnimatePresence>

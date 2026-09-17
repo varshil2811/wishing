@@ -30,11 +30,6 @@ const birthdayConfig = {
       src: "/images/photo4.jpg",
       title: "Just Us",
       caption: "My favorite place is wherever I am with you."
-    },
-    {
-      src: "/images/photo5.jpg",
-      title: "Forever",
-      caption: "I love you. Today, tomorrow, and every day after."
     }
   ],
 
@@ -69,8 +64,8 @@ const birthdayConfig = {
 
   music: {
     enabled: true,
-    src: "/music/romantic.mp3",
-    volume: 0.35 // 0.0 to 1.0
+    src: "/music/matthew_ifield.m4a",
+    volume: 0.5 // 0.0 to 1.0
   },
 
   effects: {

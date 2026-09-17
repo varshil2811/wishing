@@ -3,8 +3,8 @@ import { Volume2, VolumeX } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const MusicController = ({ musicConfig }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false); 
+  const [isVisible, setIsVisible] = useState(false); 
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -15,24 +15,32 @@ const MusicController = ({ musicConfig }) => {
     audio.volume = musicConfig.volume || 0.35;
     audioRef.current = audio;
 
-    const handleFirstInteraction = () => {
+    const attemptPlay = () => {
       if (audioRef.current && !isPlaying) {
         audioRef.current.play().then(() => {
           setIsPlaying(true);
           setIsVisible(true);
-        }).catch(err => console.log("Autoplay blocked:", err));
+          // If successful, we don't need the interaction listeners anymore
+          document.removeEventListener('click', attemptPlay);
+          document.removeEventListener('touchstart', attemptPlay);
+        }).catch(err => {
+          console.log("Autoplay blocked by browser, waiting for interaction:", err);
+          // Intentionally do not show the button yet. 
+          // The button will appear (unmuted) as soon as the user interacts with the page (e.g., clicks 'Start').
+        });
       }
-      // Remove listeners after first interaction
-      document.removeEventListener('click', handleFirstInteraction);
-      document.removeEventListener('touchstart', handleFirstInteraction);
     };
 
-    document.addEventListener('click', handleFirstInteraction);
-    document.addEventListener('touchstart', handleFirstInteraction);
+    // Try to play immediately on load
+    attemptPlay();
+
+    // Fallback: if browser blocks immediate autoplay, wait for the first click/touch
+    document.addEventListener('click', attemptPlay);
+    document.addEventListener('touchstart', attemptPlay);
 
     return () => {
-      document.removeEventListener('click', handleFirstInteraction);
-      document.removeEventListener('touchstart', handleFirstInteraction);
+      document.removeEventListener('click', attemptPlay);
+      document.removeEventListener('touchstart', attemptPlay);
       if (audioRef.current) {
         audioRef.current.pause();
       }
@@ -56,10 +64,10 @@ const MusicController = ({ musicConfig }) => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          initial={{ opacity: 0, scale: 0.8, y: -20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.8 }}
-          className="fixed bottom-6 right-6 z-50"
+          className="fixed top-6 right-6 z-50"
         >
           <button
             onClick={toggleMute}
