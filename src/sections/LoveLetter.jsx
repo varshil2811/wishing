@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 import PageTransition from '../components/PageTransition';
@@ -6,6 +6,7 @@ import GlassButton from '../components/GlassButton';
 
 const LoveLetter = ({ config, onNext }) => {
   const [showButton, setShowButton] = useState(false);
+  const scrollContainerRef = useRef(null);
   
   const letter = config.loveLetter;
 
@@ -16,6 +17,46 @@ const LoveLetter = ({ config, onNext }) => {
       setShowButton(true);
     }, timeToRead);
     return () => clearTimeout(timer);
+  }, [letter]);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    let autoScrollInterval;
+    
+    const stopAutoScroll = () => {
+      if (autoScrollInterval) clearInterval(autoScrollInterval);
+    };
+
+    const scrollTimer = setTimeout(() => {
+      if (!container) return;
+      
+      // Start auto-scrolling slowly
+      autoScrollInterval = setInterval(() => {
+        // If we reach the bottom, stop scrolling
+        if (container.scrollTop + container.clientHeight >= container.scrollHeight) {
+          clearInterval(autoScrollInterval);
+        } else {
+          container.scrollTop += 1;
+        }
+      }, 40); // 1px every 40ms is a nice slow pace
+    }, 3000); // Start auto-scroll 3 seconds in, as the first paragraphs appear
+
+    // If the user interacts with the container, stop auto-scrolling
+    if (container) {
+      container.addEventListener('wheel', stopAutoScroll, { passive: true });
+      container.addEventListener('touchstart', stopAutoScroll, { passive: true });
+      container.addEventListener('mousedown', stopAutoScroll, { passive: true });
+    }
+
+    return () => {
+      clearTimeout(scrollTimer);
+      if (autoScrollInterval) clearInterval(autoScrollInterval);
+      if (container) {
+        container.removeEventListener('wheel', stopAutoScroll);
+        container.removeEventListener('touchstart', stopAutoScroll);
+        container.removeEventListener('mousedown', stopAutoScroll);
+      }
+    };
   }, [letter]);
 
   return (
@@ -34,7 +75,10 @@ const LoveLetter = ({ config, onNext }) => {
           <div className="absolute bottom-4 left-4 text-romantic-pink/30 pointer-events-none"><Heart size={20} /></div>
           <div className="absolute bottom-4 right-4 text-romantic-pink/30 pointer-events-none"><Heart size={20} /></div>
 
-          <div className="font-handwriting text-xl md:text-3xl text-romantic-dark leading-relaxed space-y-4 md:space-y-6 overflow-y-auto no-scrollbar flex-1 pb-4">
+          <div 
+            ref={scrollContainerRef}
+            className="font-handwriting text-xl md:text-3xl text-romantic-dark leading-relaxed space-y-4 md:space-y-6 overflow-y-auto no-scrollbar flex-1 pb-4"
+          >
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
