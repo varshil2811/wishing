@@ -2,7 +2,7 @@ const birthdayConfig = {
   wifeName: "My Love", // Configurable name
 
   // Birthday date (YYYY-MM-DD format)
-  birthday: "2026-09-07", 
+  birthday: "2026-09-18", 
 
   welcome: {
     title: "Happy Birthday, My Love ❤️",

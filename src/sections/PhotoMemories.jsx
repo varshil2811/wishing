@@ -44,7 +44,7 @@ const PhotoMemories = ({ config, onNext }) => {
 
   return (
     <PageTransition className="p-0">
-      <div className="w-full h-screen relative flex items-center justify-center overflow-hidden bg-black">
+      <div className="w-full h-[100dvh] relative flex items-center justify-center overflow-hidden bg-black">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
@@ -104,7 +104,7 @@ const PhotoMemories = ({ config, onNext }) => {
             </div>
           </div>
           
-          <div className="flex justify-between items-end pb-8 pointer-events-auto">
+          <div className="flex justify-between items-end pb-12 pointer-events-auto">
             <button
               onClick={handlePrev}
               disabled={currentIndex === 0}
@@ -119,9 +119,11 @@ const PhotoMemories = ({ config, onNext }) => {
               onClick={handleNext}
               className="p-4 rounded-full glass-panel hover:bg-white/10 transition-all group flex items-center gap-2"
             >
-              <span className="text-white font-medium pl-2 hidden sm:block">
-                {currentIndex === photos.length - 1 ? 'Next' : ''}
-              </span>
+              {currentIndex === photos.length - 1 && (
+                <span className="text-white font-medium pl-2 hidden sm:block">
+                  Next
+                </span>
+              )}
               {currentIndex === photos.length - 1 ? (
                 <Heart size={24} className="text-romantic-pink" />
               ) : (

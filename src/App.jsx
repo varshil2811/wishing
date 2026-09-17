@@ -56,7 +56,7 @@ function App() {
   const CurrentComponent = SECTIONS[currentSection];
 
   return (
-    <div className="relative min-h-screen bg-romantic-dark text-romantic-cream overflow-hidden selection:bg-romantic-pink/30 selection:text-white">
+    <div className="relative min-h-[100dvh] bg-romantic-dark text-romantic-cream overflow-hidden selection:bg-romantic-pink/30 selection:text-white">
       {/* Background Effects */}
       <ParticleBackground config={birthdayConfig.effects} />
       
